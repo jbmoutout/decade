@@ -1,0 +1,13 @@
+{
+    "createdBy": "NOT Cory Arcangel",
+    "name" : "NOT Super Mario Cloud",
+    "yearCreated": "NOT 2020",
+    "description" : "NOT an NFT by Cory Arcangel",
+    "image" : "https://gateway.pinata.cloud/ipfs/QmPxZnMQgoCUi8osHx29tpbSTnGmSLhT86U8BRCz4FxjHW",
+    "media": {
+        "uri": "https://ipfs.pixura.io/ipfs/QmXHMZsenpWzFLgXmFZjMbTpf8wjQZAJP8EdarkjQh3cuE/960x1080_30mbs.mp4",
+        "dimensions": "960x1080",
+        "size": "43688958",
+        "mimeType": "video/mp4"
+    }
+}
