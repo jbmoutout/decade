@@ -2,12 +2,13 @@
 
 pragma solidity ^0.8.9;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/interfaces/IERC2981.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/utils/Address.sol";
+import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
+import '@openzeppelin/contracts/access/Ownable.sol';
+import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
+import '@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol';
+import '@openzeppelin/contracts/interfaces/IERC2981.sol';
+import '@openzeppelin/contracts/utils/Counters.sol';
+import '@openzeppelin/contracts/utils/Address.sol';
 
 /** 
                                                                      ,----, 
@@ -28,39 +29,36 @@ import "@openzeppelin/contracts/utils/Address.sol";
                                                                             
 **/
 
-contract CarlAndre is ERC721, IERC2981, ReentrancyGuard, Ownable {
+contract CarlAndre is ERC721, IERC2981, ReentrancyGuard, ERC721URIStorage, Ownable {
   using Counters for Counters.Counter;
 
   // Constants
   uint256 public constant MAX_SUPPLY = 30;
   uint256 public constant PRICE = 20000000000000000; /// 0.02 ETH
 
-  address private constant galleryAddress =
-    0xd7E8D1a3534CDa62C6574309D8100c1c7B52241c;
+  address private constant galleryAddress = 0xd7E8D1a3534CDa62C6574309D8100c1c7B52241c;
+  address private constant artistAddress = 0x51893553130B4468c22694fA7434cF05b03CCE41;
 
-  address private constant artistAddress =
-    0x51893553130B4468c22694fA7434cF05b03CCE41;
-
-
-  /// @dev Base token URI used as a prefix by tokenURI().
-  string public baseTokenURI;
-
-  constructor() ERC721("CarlAndre", "DCNT") {
-    baseTokenURI = "";
-  }
+  constructor() ERC721('CarlAndre', 'DCNT') {}
 
   /** MINTING **/
 
   Counters.Counter private supplyCounter;
 
+  string private metadataURI;
+
   function mint(uint256 tokenId) public payable nonReentrant {
-    require(saleIsActive, "Sale not active");
+    require(saleIsActive, 'Sale not active');
 
-    require(totalSupply() < MAX_SUPPLY, "Exceeds max supply");
+    require(totalSupply() < MAX_SUPPLY, 'Exceeds max supply');
 
-    require(msg.value >= PRICE, "Insufficient payment, 0.02 ETH per artwork");
+    require(msg.value >= PRICE, 'Insufficient payment');
+
+    require(bytes(metadataURI).length != 0, 'Metadata not set');
 
     _safeMint(msg.sender, tokenId);
+
+    _setTokenURI(tokenId, metadataURI);
 
     supplyCounter.increment();
   }
@@ -77,17 +75,19 @@ contract CarlAndre is ERC721, IERC2981, ReentrancyGuard, Ownable {
     saleIsActive = saleIsActive_;
   }
 
-  /** URI HANDLING **/
+  /** METADATA **/
 
-  string private customBaseURI;
-
-  function setBaseURI(string memory baseTokenURI_) external onlyOwner {
-    baseTokenURI = baseTokenURI_;
+  function setMetadataURI(string memory metadataURI_) external onlyOwner {
+    metadataURI = metadataURI_;
   }
 
-  /// @dev Sets the base token URI prefix.
-  function _baseURI() internal view virtual override returns (string memory) {
-    return baseTokenURI;
+  function tokenURI(uint256 tokenId)
+    public
+    view
+    override(ERC721, ERC721URIStorage)
+    returns (string memory)
+  {
+    return super.tokenURI(tokenId);
   }
 
   /** PAYOUT **/
@@ -95,16 +95,19 @@ contract CarlAndre is ERC721, IERC2981, ReentrancyGuard, Ownable {
   function withdraw() public nonReentrant {
     uint256 balance = address(this).balance;
 
-    Address.sendValue(payable(owner()), balance * 40 / 100);
+    Address.sendValue(payable(owner()), (balance * 40) / 100);
 
-    Address.sendValue(payable(galleryAddress), balance * 30 / 100);
+    Address.sendValue(payable(galleryAddress), (balance * 30) / 100);
 
-    Address.sendValue(payable(artistAddress), balance * 30 / 100);
+    Address.sendValue(payable(artistAddress), (balance * 30) / 100);
   }
 
   /** ROYALTIES **/
 
-  function royaltyInfo(uint256, uint256 salePrice) external view override
+  function royaltyInfo(uint256, uint256 salePrice)
+    external
+    view
+    override
     returns (address receiver, uint256 royaltyAmount)
   {
     return (address(this), (salePrice * 1000) / 10000);
@@ -117,10 +120,13 @@ contract CarlAndre is ERC721, IERC2981, ReentrancyGuard, Ownable {
     override(ERC721, IERC165)
     returns (bool)
   {
-    return (
-      interfaceId == type(IERC2981).interfaceId ||
-      super.supportsInterface(interfaceId)
-    );
+    return (interfaceId == type(IERC2981).interfaceId || super.supportsInterface(interfaceId));
+  }
+
+  // The following functions are overrides required by Solidity.
+
+  function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
+    super._burn(tokenId);
   }
 }
 
