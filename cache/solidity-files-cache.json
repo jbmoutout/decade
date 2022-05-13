@@ -1,10 +1,10 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/Users/jbmoutout/code/decade/contracts/CarlAndre.sol": {
-      "lastModificationDate": 1652398619019,
-      "contentHash": "05d800a22c280efa98809b2c0f23158e",
-      "sourceName": "contracts/CarlAndre.sol",
+    "/Users/jbmoutout/code/decade/contracts/CarlAndreDocent.sol": {
+      "lastModificationDate": 1652433330619,
+      "contentHash": "02e57604f41207c1c2ff79b299275180",
+      "sourceName": "contracts/CarlAndreDocent.sol",
       "solcConfig": {
         "version": "0.8.9",
         "settings": {
@@ -32,6 +32,7 @@
         "@openzeppelin/contracts/token/ERC721/ERC721.sol",
         "@openzeppelin/contracts/access/Ownable.sol",
         "@openzeppelin/contracts/security/ReentrancyGuard.sol",
+        "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
         "@openzeppelin/contracts/interfaces/IERC2981.sol",
         "@openzeppelin/contracts/utils/Counters.sol",
         "@openzeppelin/contracts/utils/Address.sol"
@@ -40,7 +41,7 @@
         "^0.8.9"
       ],
       "artifacts": [
-        "CarlAndre"
+        "CarlAndreDocent"
       ]
     },
     "/Users/jbmoutout/code/decade/node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol": {
@@ -156,6 +157,43 @@
       ],
       "artifacts": [
         "ReentrancyGuard"
+      ]
+    },
+    "/Users/jbmoutout/code/decade/node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol": {
+      "lastModificationDate": 1651876386470,
+      "contentHash": "580a443491d9d70eb064b0130fc3cd01",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../ERC721.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC721URIStorage"
       ]
     },
     "/Users/jbmoutout/code/decade/node_modules/@openzeppelin/contracts/interfaces/IERC2981.sol": {
@@ -555,8 +593,8 @@
       ]
     },
     "/Users/jbmoutout/code/decade/contracts/NFT.sol": {
-      "lastModificationDate": 1652305413172,
-      "contentHash": "2e69b72f8a4fc1d0b38e5637b66b2c46",
+      "lastModificationDate": 1652403897579,
+      "contentHash": "b39f1fc907e56042e98b5f9f3ef557e7",
       "sourceName": "contracts/NFT.sol",
       "solcConfig": {
         "version": "0.8.9",

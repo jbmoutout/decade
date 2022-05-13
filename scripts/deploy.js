@@ -10,7 +10,10 @@ task('check-balance', 'Prints out the balance of your account').setAction(async 
 });
 
 task('deploy', 'Deploys the DOCENT contract').setAction(async function (taskArguments, hre) {
-  const nftContractFactory = await hre.ethers.getContractFactory('CarlAndre', getAccount());
+  const nftContractFactory = await hre.ethers.getContractFactory(
+    process.env.NFT_CONTRACT_NAME,
+    getAccount()
+  );
   const nft = await nftContractFactory.deploy();
-  console.log(`Contract deployed to address: ${nft}`);
+  console.log(`Contract deployed to address: ${nft.address}`);
 });
